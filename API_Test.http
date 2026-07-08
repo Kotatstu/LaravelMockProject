@@ -1,0 +1,115 @@
+### Base URL
+@baseUrl = http://127.0.0.1:8000/api
+
+//=========================================== WAREHOUSE CONTROLLER ============================================
+### GET all warehouse
+GET {{baseUrl}}/warehouse
+
+### Create a new warehouse
+POST {{baseUrl}}/warehouse
+Content-Type: application/json
+
+{
+    "name": "Warehouse name B",
+    "location": "Street ABC Block XYZ"
+}
+
+### Show?
+GET {{baseUrl}}/warehouse/2
+
+### Update
+PUT {{baseUrl}}/warehouse/1
+Content-Type: application/json
+
+{
+    "name": "Warehouse name AAAAAAAAAAAA"
+}
+
+### Delele a wareshouse
+DELETE {{baseUrl}}/warehouse/1
+
+//=======================================CATEGORY CONTROLLER=========================================
+###Get all the categories record
+GET {{baseUrl}}/category
+
+###Create a new category
+POST {{baseUrl}}/category/create
+Content-Type: application/json
+
+{
+    "name": "Porceiline"
+}
+
+###Get by id
+GET {{baseUrl}}/category/1
+
+###Update by id
+PUT {{baseUrl}}/category/update/1
+Content-Type: application/json
+
+{
+    "name": "updated name"
+}
+
+###Delete by id
+DELETE {{baseUrl}}/category/delete/8
+
+//========================================= SupplierController =============================================
+###Get all supplier
+GET {{baseUrl}}/supplier
+
+###Create a new supplier
+POST {{baseUrl}}/supplier/create
+Content-Type: application/json
+
+{
+    "name": "Asus",
+    "email": "kotatstu0303@gmail.com",
+    "phone": "0123456789"
+}
+
+###Get by id
+GET {{baseUrl}}/supplier/1
+
+
+###update
+PUT {{baseUrl}}/supplier/update/1
+Content-Type: application/json
+
+{
+    "name": "updated name Acer"
+}
+
+
+###Delete by id
+DELETE {{baseUrl}}/supplier/delete/4
+
+//========================================= PRODUCT CONTROLLER ============================================
+###
+GET {{baseUrl}}/product
+
+###Create new product
+POST {{baseUrl}}/product/create
+Content-Type: application/json
+
+{
+    "name": "Product name A",
+    "sku": "P-002",
+    "category_id": 1,
+    "supplier_id": 2
+}
+
+###Get by id
+GET {{baseUrl}}/product/2
+
+###Update
+PUT {{baseUrl}}/product/update/1
+Content-Type: application/json
+
+{
+    "name": "Updated USB Cable",
+    "sku": "USB-001"
+}
+
+###Delete by id
+DELETE  {{baseUrl}}/product/delete/1
