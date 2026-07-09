@@ -151,7 +151,7 @@ POST {{baseUrl}}/purchaseOrder/create
 Content-Type: application/json
 
 {
-      "reference": "Cyberpunk",
+      "reference": "Mushoku",
       "supplier_id": 1,
       "status": "Pending",
       "items": [{
@@ -175,7 +175,7 @@ Content-Type: application/json
 DELETE {{baseUrl}}/purchaseOrder/delete/1
 
 ###Received an order, called service layer
-POST {{baseUrl}}/purchaseOrder/3/receive
+POST {{baseUrl}}/purchaseOrder/4/receive
 Content-Type: application/json
 
 {

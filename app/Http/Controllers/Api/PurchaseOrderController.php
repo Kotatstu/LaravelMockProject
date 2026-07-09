@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\ReceiveStockDTO;
 use App\Http\Controllers\Controller;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
@@ -95,7 +96,8 @@ class PurchaseOrderController extends Controller
         
         try
         {
-            $purchaseOrder = $this->service->receive($purchaseOrder, $validated['warehouse_id']);
+            $dto = ReceiveStockDTO::fromRequest($request);
+            $purchaseOrder = $this->service->receive($purchaseOrder, $dto->warehouseID);
 
             return response()->json($purchaseOrder);
         }
