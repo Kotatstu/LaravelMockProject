@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PurchaseOrderController;
+use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\WarehouseController;
 use Illuminate\Http\Request;
@@ -31,3 +33,17 @@ Route::post('/product/create', [ProductController::class, 'store']);
 Route::get('/product/{product}', [ProductController::class, 'show']);
 Route::put('product/update/{product}', [ProductController::class, 'update']);
 Route::delete('/product/delete/{product}', [ProductController::class, 'destroy']);
+
+Route::get('/stock', [StockController::class, 'index']);
+Route::post('/stock/create', [StockController::class, 'store']);
+Route::get('/stock/{stock}', [StockController::class, 'show']);
+Route::put('/stock/update/{stock}', [StockController::class, 'update']);
+Route::delete('/stock/delete/{stock}', [StockController::class, 'destroy']);
+
+Route::get('/purchaseOrder', [PurchaseOrderController::class, 'index']);
+Route::post('/purchaseOrder/create', [PurchaseOrderController::class, 'store']);
+Route::get('/purchaseOrder/{purchaseOrder}', [PurchaseOrderController::class, 'show']);
+Route::put('/purchaseOrder/update/{purchaseOrder}', [PurchaseOrderController::class, 'update']);
+Route::delete('purchaseOrder/delete/{purchaseOrder}', [PurchaseOrderController::class, 'destroy']);
+
+Route::post('/purchaseOrder/{purchaseOrder}/receive', [PurchaseOrderController::class, 'receive']);

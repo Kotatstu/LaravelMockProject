@@ -112,4 +112,72 @@ Content-Type: application/json
 }
 
 ###Delete by id
-DELETE  {{baseUrl}}/product/delete/1
+DELETE  {{baseUrl}}/product/delete/
+
+//============================================== STOCK CONTROLLER ===============================================================
+###Get all stock
+GET {{baseUrl}}/stock
+
+###Create new stock
+POST {{baseUrl}}/stock/create
+Content-Type: application/json
+
+{
+    "warehouse_id": 2,
+    "product_id": 3,
+    "quantity": 10
+}
+
+###Get by id
+GET {{baseUrl}}/stock/1
+
+###Update by id
+PUT {{baseUrl}}/stock/update/1
+Content-Type: application/json
+
+{
+    "quantity": 999
+}
+
+###delete by id
+DELETE {{baseUrl}}/stock/delete/2
+
+//======================================================= PurchaseOrderController =================================
+###Get all
+GET {{baseUrl}}/purchaseOrder
+
+###Create new
+POST {{baseUrl}}/purchaseOrder/create
+Content-Type: application/json
+
+{
+      "reference": "Cyberpunk",
+      "supplier_id": 1,
+      "status": "Pending",
+      "items": [{
+        "product_id": 2,
+        "quantity": 2077
+      }]
+}
+
+###Get by id
+GET {{baseUrl}}/purchaseOrder/2
+
+###Update by id
+PUT {{baseUrl}}/purchaseOrder/update/2
+Content-Type: application/json
+
+{
+    "status": "Ongoing"
+}
+
+###Delete by id
+DELETE {{baseUrl}}/purchaseOrder/delete/1
+
+###Received an order, called service layer
+POST {{baseUrl}}/purchaseOrder/3/receive
+Content-Type: application/json
+
+{
+    "warehouse_id": 2
+}
