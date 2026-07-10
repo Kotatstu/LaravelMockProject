@@ -4,18 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Stock;
+use App\Repositories\StockRepository;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
+    public function __construct(private StockRepository $repository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $stock = Stock::with(['warehouse', 'product'])->get();
-
-        return response()->json($stock);
+        return response()->json($this->repository->all(['warehouse', 'product']));
     }
 
     /**
@@ -41,9 +44,9 @@ class StockController extends Controller
             );
         }
 
-        $stock = Stock::create($validated);
+        $stock = $this->repository->create($validated, ['warehouse', 'product']);
 
-        return response()->json($stock->load(['warehouse', 'product']), 201);
+        return response()->json($stock, 201);
         
     }
 
@@ -52,7 +55,7 @@ class StockController extends Controller
      */
     public function show(Stock $stock)
     {
-        return response()->json($stock->load(['warehouse', 'product']));
+        return response()->json($this->repository->find($stock->id, ['warehouse', 'product']));
     }
 
     /**
@@ -64,9 +67,9 @@ class StockController extends Controller
             'quantity' => ['sometimes', 'integer', 'min:0']
         ]);
 
-        $stock->update($validated);
+        $stock = $this->repository->update($stock, $validated, ['warehouse', 'product']);
 
-        return response()->json($stock->load(['warehouse', 'product']));
+        return response()->json($stock);
     }
 
     /**
@@ -74,7 +77,7 @@ class StockController extends Controller
      */
     public function destroy(Stock $stock)
     {
-        $stock->delete();
+        $this->repository->delete($stock);
 
         return response()->json(null, 204);
     }

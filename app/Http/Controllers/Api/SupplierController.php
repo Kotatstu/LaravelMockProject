@@ -4,16 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
+use App\Repositories\SupplierRepository;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    public function __construct(private SupplierRepository $repository)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Supplier::all();
+        return response()->json($this->repository->all());
     }
 
     /**
@@ -27,7 +31,7 @@ class SupplierController extends Controller
             'phone' => ['nullable', 'string', 'max:10']
         ]);
 
-        $supplier = Supplier::create($validated);
+        $supplier = $this->repository->create($validated);
 
         return response()->json($supplier, 201);
     }
@@ -37,7 +41,7 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        return response()->json($supplier);
+        return response()->json($this->repository->find($supplier->id));
     }
 
     /**
@@ -52,7 +56,7 @@ class SupplierController extends Controller
 
         ]);
 
-        $supplier->update($validated);
+        $supplier = $this->repository->update($supplier, $validated);
 
         return response()->json($supplier);
     }
@@ -69,7 +73,8 @@ class SupplierController extends Controller
                 ],
                 409);
             }
-        else $supplier->delete();
+        
+        $this->repository->delete($supplier);
 
         return response()->json(null, 204);
     }

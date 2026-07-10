@@ -10,7 +10,7 @@ POST {{baseUrl}}/warehouse
 Content-Type: application/json
 
 {
-    "name": "Warehouse name B",
+    "name": "Warehouse name C",
     "location": "Street ABC Block XYZ"
 }
 
@@ -18,7 +18,7 @@ Content-Type: application/json
 GET {{baseUrl}}/warehouse/2
 
 ### Update
-PUT {{baseUrl}}/warehouse/1
+PUT {{baseUrl}}/warehouse/2
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ### Delele a wareshouse
-DELETE {{baseUrl}}/warehouse/1
+DELETE {{baseUrl}}/warehouse/2
 
 //=======================================CATEGORY CONTROLLER=========================================
 ###Get all the categories record
@@ -41,10 +41,10 @@ Content-Type: application/json
 }
 
 ###Get by id
-GET {{baseUrl}}/category/1
+GET {{baseUrl}}/category/9
 
 ###Update by id
-PUT {{baseUrl}}/category/update/1
+PUT {{baseUrl}}/category/update/9
 Content-Type: application/json
 
 {
@@ -69,11 +69,11 @@ Content-Type: application/json
 }
 
 ###Get by id
-GET {{baseUrl}}/supplier/1
+GET {{baseUrl}}/supplier/6
 
 
 ###update
-PUT {{baseUrl}}/supplier/update/1
+PUT {{baseUrl}}/supplier/update/6
 Content-Type: application/json
 
 {
@@ -82,7 +82,7 @@ Content-Type: application/json
 
 
 ###Delete by id
-DELETE {{baseUrl}}/supplier/delete/4
+DELETE {{baseUrl}}/supplier/delete/6
 
 //========================================= PRODUCT CONTROLLER ============================================
 ###
@@ -93,26 +93,26 @@ POST {{baseUrl}}/product/create
 Content-Type: application/json
 
 {
-    "name": "Product name A",
-    "sku": "P-002",
+    "name": "Product name F",
+    "sku": "F-001",
     "category_id": 1,
     "supplier_id": 2
 }
 
 ###Get by id
-GET {{baseUrl}}/product/2
+GET {{baseUrl}}/product/4
 
 ###Update
-PUT {{baseUrl}}/product/update/1
+PUT {{baseUrl}}/product/update/4
 Content-Type: application/json
 
 {
     "name": "Updated USB Cable",
-    "sku": "USB-001"
+    "sku": "USB-005"
 }
 
 ###Delete by id
-DELETE  {{baseUrl}}/product/delete/
+DELETE  {{baseUrl}}/product/delete/4
 
 //============================================== STOCK CONTROLLER ===============================================================
 ###Get all stock
@@ -123,16 +123,16 @@ POST {{baseUrl}}/stock/create
 Content-Type: application/json
 
 {
-    "warehouse_id": 2,
+    "warehouse_id": 3,
     "product_id": 3,
     "quantity": 10
 }
 
 ###Get by id
-GET {{baseUrl}}/stock/1
+GET {{baseUrl}}/stock/5
 
 ###Update by id
-PUT {{baseUrl}}/stock/update/1
+PUT {{baseUrl}}/stock/update/5
 Content-Type: application/json
 
 {
@@ -140,7 +140,7 @@ Content-Type: application/json
 }
 
 ###delete by id
-DELETE {{baseUrl}}/stock/delete/2
+DELETE {{baseUrl}}/stock/delete/5
 
 //======================================================= PurchaseOrderController =================================
 ###Get all
@@ -151,12 +151,12 @@ POST {{baseUrl}}/purchaseOrder/create
 Content-Type: application/json
 
 {
-      "reference": "Mushoku",
+      "reference": "Roxy",
       "supplier_id": 1,
       "status": "Pending",
       "items": [{
         "product_id": 2,
-        "quantity": 2077
+        "quantity": 7000
       }]
 }
 
@@ -175,7 +175,7 @@ Content-Type: application/json
 DELETE {{baseUrl}}/purchaseOrder/delete/1
 
 ###Received an order, called service layer
-POST {{baseUrl}}/purchaseOrder/4/receive
+POST {{baseUrl}}/purchaseOrder/6/receive
 Content-Type: application/json
 
 {

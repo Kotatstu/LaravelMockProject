@@ -4,18 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Warehouse;
+use App\Repositories\WarehouseRepository;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
+    public function __construct(private WarehouseRepository $repository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $warehouses = Warehouse::all();
-
-        return $warehouses;
+        return response()->json($this->repository->all());
     }
 
     /**
@@ -28,7 +31,7 @@ class WarehouseController extends Controller
             'location' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $warehouse = Warehouse::create($validated);
+        $warehouse = $this->repository->create($validated);
 
         return response()->json($warehouse, 201);
     }
@@ -38,7 +41,7 @@ class WarehouseController extends Controller
      */
     public function show(Warehouse $warehouse)
     {
-        return $warehouse;
+        return $this->repository->find($warehouse->id);
     }
 
     /**
@@ -51,7 +54,7 @@ class WarehouseController extends Controller
             'location' => ['sometimes', 'string', 'max:255'],
         ]);
 
-        $warehouse->update($validated);
+        $warehouse = $this->repository->update($warehouse, $validated);
 
         return response()->json($warehouse);
     }
@@ -61,7 +64,15 @@ class WarehouseController extends Controller
      */
     public function destroy(Warehouse $warehouse)
     {
-        $warehouse->delete();
+        if ($warehouse->stocks()->exists())
+        {
+            return response()->json([
+                'message' => 'Cannot delete this category cuz it still has products asigned to it'
+            ], 
+            409);
+        }
+
+        $this->repository->delete($warehouse);
 
         return response()->json(null, 204);
     }

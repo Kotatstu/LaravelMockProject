@@ -2,10 +2,6 @@
 
 namespace App\DTOs;
 
-use Illuminate\Http\Request;
-
-
-
 final class ReceiveStockDTO
 {
     //Only things needed for receive stock is warehouse, for now
@@ -14,10 +10,10 @@ final class ReceiveStockDTO
 
     }
 
-    public static function fromRequest(Request $request) : self
+    public static function fromArray(array $validated) : self
     {
         return new self(
-            warehouseID: $request->integer('warehouse_id')
+            warehouseID: $validated['warehouse_id'],
         );
     }
 }

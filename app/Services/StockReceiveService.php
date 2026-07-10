@@ -3,11 +3,15 @@
 namespace App\Services;
 
 use App\Models\PurchaseOrder;
-use App\Models\Stock;
+use App\Repositories\StockRepository;
 use Illuminate\Support\Facades\DB;
 
 class StockReceiveService
 {
+    public function __construct(private StockRepository $stockRepository)
+    {        
+    }
+
     public function receive(PurchaseOrder $purchaseOrder, int $warehouseID) : PurchaseOrder
     {
         //check if the order is already received and throw an exception, ortherwise, continute
@@ -21,23 +25,7 @@ class StockReceiveService
             //loop thru the item list in the order and check if there are a current stock of it in the given warehouse ID
             foreach ($purchaseOrder->items as $item)
             {
-                $stock = Stock::where('warehouse_id', $warehouseID)
-                ->where('product_id', $item->product_id)
-                ->lockForUpdate()//lock the concurrent database
-                ->first();//return the first one found
-
-                if (!$stock)
-                {
-                    $stock = Stock::create([
-                        'warehouse_id' => $warehouseID,
-                        'product_id' => $item->product_id,
-                        'quantity' => 0,
-                    ]);
-                }
-
-                $stock->increment('quantity', $item->quantity);
-
-                
+                $this->stockRepository->incrementStock($warehouseID, $item->product_id, $item->quantity);
             }
 
             $purchaseOrder->update(['status' => 'received']);//change the single field status of whatever into received

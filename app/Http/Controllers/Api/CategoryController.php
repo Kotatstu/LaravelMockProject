@@ -4,18 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct(private CategoryRepository $repository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::all();
-
-        return response()->json($categories);
+        return response()->json($this->repository->all());
     }
 
     /**
@@ -27,7 +30,7 @@ class CategoryController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        $category = Category::create($validated);
+        $category = $this->repository->create($validated);
 
         return response()->json($category, 201);
     }
@@ -37,7 +40,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return response()->json($category);
+        return response()->json($this->repository->find($category->id));
     }
 
     /**
@@ -49,7 +52,7 @@ class CategoryController extends Controller
             'name' => ['sometimes', 'string', 'max:255']
         ]);
 
-        $category->update($validated);
+        $category = $this->repository->update($category, $validated);
 
         return response()->json($category);
     }
@@ -66,7 +69,8 @@ class CategoryController extends Controller
                 ], 
                 409);
             }
-        else $category->delete();
+        
+            $this->repository->delete($category);
 
         return response()->json(null, 204);
     }

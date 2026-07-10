@@ -96,7 +96,7 @@ class PurchaseOrderController extends Controller
         
         try
         {
-            $dto = ReceiveStockDTO::fromRequest($request);
+            $dto = ReceiveStockDTO::fromArray($validated);
             $purchaseOrder = $this->service->receive($purchaseOrder, $dto->warehouseID);
 
             return response()->json($purchaseOrder);

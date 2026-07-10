@@ -4,17 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
+    public function __construct(private ProductRepository $repository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Product::with(['category', 'supplier'])->get();
+        return response()->json($this->repository->all(['category', 'supplier']));
     }
 
     /**
@@ -29,7 +34,7 @@ class ProductController extends Controller
             'supplier_id' => ['required', 'exists:suppliers,id'],
         ]);
 
-        $product = Product::create($validated);
+        $product = $this->repository->create($validated);
 
         return response()->json($product, 201);
     }
@@ -39,7 +44,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return response()->json($product->load(['category', 'supplier']));
+        return response()->json($this->repository->find($product->id, ['category', 'supplier']));
     }
 
     /**
@@ -54,9 +59,9 @@ class ProductController extends Controller
             'supplier_id' => ['sometimes', 'exists:suppliers,id'],
         ]);
 
-        $product->update($validated);
+        $product = $this->repository->update($product, $validated, ['category', 'supplier']);
 
-        return response()->json($product->load(['category', 'supplier']));
+        return response()->json($product);
     }
 
     /**
@@ -64,7 +69,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->delete();
+        $this->repository->delete($product);
 
         return response()->json(null, 204);
     }
