@@ -1,0 +1,24 @@
+URL request
+-> route
+-> controller
+-> service
++> repository
+-> dto
+-> model
+=> view
+
+Essential function:
+- Received a purchase order (purchaseOrder, warehouse_id)
++ Check purchase order if is "pending" if not -> skip
++ Check if there is stock in that warehouse_id, if not create new stock
++ Add purchaseOrder item quantity to matching Stock
+
+
+Daily log:
+tuesday 7/7: Setted up the project, re-learn the basic
+wed 8/7: Eloquent model, migrations, Category, Product, Supplier, Warehouse Controller, Basic CRUD, api test (api.php instead of web.php to avoid CSRF token)
+thurdays 9/7: PurchaseOrder n PurhcaseOrderItems Controller, basic CRUD, the received function that use service layer (StockReceiveService) that use ReceivedOrderDTO (have only "warehouse_id" for now)
+friday 10/7: Introducing repository layer, replace all of the basic CRUD eloquent querry with repository class, changed received service and DTO a bit for fitting the repository
+sat 11/7: receive and export function
+sun 12/7: authentication and authority
+mon 13/7: idealy, call for HR for a seccond interview

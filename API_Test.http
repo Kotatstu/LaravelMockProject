@@ -151,13 +151,20 @@ POST {{baseUrl}}/purchaseOrder/create
 Content-Type: application/json
 
 {
-      "reference": "Roxy",
+      "reference": "Greyrat",
       "supplier_id": 1,
       "status": "Pending",
-      "items": [{
-        "product_id": 2,
-        "quantity": 7000
-      }]
+      "items": 
+      [
+        {
+            "product_id": 2,
+            "quantity": 69
+        },
+        {
+            "product_id": 3,
+            "quantity": 100
+        }
+      ]
 }
 
 ###Get by id
@@ -168,16 +175,29 @@ PUT {{baseUrl}}/purchaseOrder/update/2
 Content-Type: application/json
 
 {
-    "status": "Ongoing"
+    "status": "Pending"
 }
 
 ###Delete by id
-DELETE {{baseUrl}}/purchaseOrder/delete/1
+DELETE {{baseUrl}}/purchaseOrder/delete/3
 
 ###Received an order, called service layer
-POST {{baseUrl}}/purchaseOrder/6/receive
+POST {{baseUrl}}/purchaseOrder/10/receive
 Content-Type: application/json
 
 {
-    "warehouse_id": 2
+    "warehouse_id": 2,
+    "items":
+    [
+        {
+            "purchase_order_item_id": 9,
+            "quantity": 19
+        },
+
+        {
+            "purchase_order_item_id": 10,
+            "quantity": 100
+        }
+
+    ]
 }

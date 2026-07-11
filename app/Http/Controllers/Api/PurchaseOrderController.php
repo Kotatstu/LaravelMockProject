@@ -5,23 +5,25 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\ReceiveStockDTO;
 use App\Http\Controllers\Controller;
 use App\Models\PurchaseOrder;
-use App\Models\PurchaseOrderItem;
+use App\Repositories\PurchaseOrderRepository;
+use App\Services\PurchaseOrderService;
 use App\Services\StockReceiveService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderController extends Controller
 {
-    public function __construct(private StockReceiveService $service) {}
-
+    public function __construct(
+        private StockReceiveService $StockReceiveservice,
+        private PurchaseOrderService $purchaseOrderService,
+        private PurchaseOrderRepository $repository
+        ) {}
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $purchase = PurchaseOrder::with(['supplier', 'items'])->get();
 
-        return response()->json($purchase);
+        return response()->json($this->repository->all(['supplier', 'items']));
     }
 
     /**
@@ -29,7 +31,7 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
+        $validated = $request->validate([
             'reference' => ['required', 'string', 'unique:purchase_orders,reference'],
             'supplier_id' => ['required', 'integer', 'exists:suppliers,id'],
             'status' => ['required', 'string'],
@@ -38,22 +40,9 @@ class PurchaseOrderController extends Controller
             'items.*.quantity' => ['required', 'integer', 'min:1']
         ]);
 
-        $purchase = DB::transaction(function () use ($validate)
-        {
-            $purchaseOrder = PurchaseOrder::create($validate);
-            foreach ($validate['items'] as $item)
-            {
-                PurchaseOrderItem::create([
-                    'purchase_order_id' => $purchaseOrder->id,
-                    'product_id' => $item['product_id'],
-                    'quantity' => $item['quantity']
-                ]);
-            }
+        $purchase = $this->purchaseOrderService->createWithItems($validated);
 
-            return $purchaseOrder;
-        });
-
-        return response()->json($purchase->load(['items', 'supplier']), 201);
+        return response()->json($purchase, 201);
     }
 
     /**
@@ -61,7 +50,9 @@ class PurchaseOrderController extends Controller
      */
     public function show(PurchaseOrder $purchaseOrder)
     {
-        return response()->json($purchaseOrder->load(['supplier', 'items.product']));
+        $purchaseOrder = $this->repository->find($purchaseOrder->id, ['supplier', 'items']);
+
+        return response()->json($purchaseOrder);
     }
 
     /**
@@ -69,13 +60,13 @@ class PurchaseOrderController extends Controller
      */
     public function update(Request $request, PurchaseOrder $purchaseOrder)
     {
-        $validate = $request->validate([
+        $validated = $request->validate([
             'status' => ['sometimes', 'string']
         ]);
 
-        $purchaseOrder->update($validate);
+        $purchaseOrder = $this->repository->update($purchaseOrder, $validated, ['supplier', 'items']);
 
-        return response()->json($purchaseOrder->load(['supplier', 'items']));
+        return response()->json($purchaseOrder);
     }
 
     /**
@@ -83,30 +74,31 @@ class PurchaseOrderController extends Controller
      */
     public function destroy(PurchaseOrder $purchaseOrder)
     {
-        $purchaseOrder->delete();
+        $this->repository->delete($purchaseOrder);
 
         return response()->json(null, 204);
     }
 
+    //
     public function receive(Request $request, PurchaseOrder $purchaseOrder)
     {
         $validated = $request->validate([
-            'warehouse_id' => ['required', 'integer', 'exists:warehouses,id']
+            'warehouse_id' => ['required', 'integer', 'exists:warehouses,id'],
+            'items' => ['required', 'array', 'min:1'],
+            'items.*.purchase_order_item_id' => ['required', 'integer', 'exists:purchase_order_items,id'],
+            'items.*.quantity' => ['required', 'integer', 'min:1']
         ]);
         
         try
         {
             $dto = ReceiveStockDTO::fromArray($validated);
-            $purchaseOrder = $this->service->receive($purchaseOrder, $dto->warehouseID);
+            $purchaseOrder = $this->StockReceiveservice->receive($purchaseOrder, $dto);
 
             return response()->json($purchaseOrder);
         }
         catch (\Exception $e)
         {
-            return response()->json([
-                'message' => $e->getMessage()
-            ],
-            409);
+            return response()->json(['message' => $e->getMessage()], 409);
         }
         
     }
