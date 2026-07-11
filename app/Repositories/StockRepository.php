@@ -6,7 +6,7 @@ use App\Models\Stock;
 
 class StockRepository extends BaseRepository
 {
-    public function model() : string
+    protected function model() : string
     {
         return Stock::class;
     }
@@ -30,5 +30,24 @@ class StockRepository extends BaseRepository
        $stock->increment('quantity', $quantity);
 
        return $stock;
+    }
+
+    public function decrementStock(int $warehouseID, int $productID, int $quantity) : Stock
+    {
+        //find the matching record
+        $stock = Stock::where('warehouse_id', $warehouseID)
+        ->where('product_id', $productID)
+        ->lockForUpdate()
+        ->first();
+
+        //If not found ORRRRR the current item count in stock is not enuf for exporting
+        if(!$stock || $stock->quantity < $quantity)
+        {
+            throw new \Exception("Insufficient stock available for this product");
+        }
+
+        $stock->decrement('quantity', $quantity);
+
+        return $stock;
     }
 }

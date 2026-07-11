@@ -27,4 +27,9 @@ class Product extends Model
     {
         return $this->hasMany(PurchaseOrderItem::class);    
     }
+
+    public function stockExportItems()
+    {
+        return $this->hasMany(StockExportItem::class);
+    }
 }

@@ -13,6 +13,17 @@ Essential function:
 + Check if there is stock in that warehouse_id, if not create new stock
 + Add purchaseOrder item quantity to matching Stock
 
+-Export stock:
+1. Guard: if $stockExport->status === 'dispatched', throw (fully dispatched, nothing left)
+2. DB::transaction:
+   a. Loop through $dto->items (the specific lines being dispatched now)
+   b. Find the StockExportItem, verify it belongs to this $stockExport
+   c. Calculate $remaining = quantity - quantity_dispatched
+   d. Validate requested amount <= $remaining
+   e. Call stockRepository->decrementStock() — this is where "not enough stock" gets caught
+   f. Increment quantity_dispatched on the item
+   g. After the loop: recalculate status (all items fully dispatched → 'dispatched', else → 'partly_dispatched')
+   h. Update $stockExport, return fresh with relationships
 
 Daily log:
 tuesday 7/7: Setted up the project, re-learn the basic

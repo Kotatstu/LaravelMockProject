@@ -6,7 +6,7 @@ use App\Models\PurchaseOrder;
 
 class PurchaseOrderRepository extends BaseRepository
 {
-    public function model(): string
+    protected function model(): string
     {
         return PurchaseOrder::class;
     }

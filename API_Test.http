@@ -201,3 +201,48 @@ Content-Type: application/json
 
     ]
 }
+
+//============================================== STOCK EXPORT CONTROLLER =========================================
+###Get all
+GET {{baseUrl}}/stockExport
+
+###Create new record
+POST {{baseUrl}}/stockExport/create
+Content-Type: application/json
+
+{
+  "reference": "EXP-1003",
+  "warehouse_id": 2,
+  "destination": "Downtown Shop",
+  "items": [
+    {
+        "product_id": 2, "quantity": 10 
+    }
+  ]
+}
+
+###Get by id
+GET {{baseUrl}}/stockExport/1
+
+###Update by id
+PUT {{baseUrl}}/stockExport/update/1
+Content-Type: application/json
+
+{
+    "destination": "AAAAAAAAAAAAAAAAAAAAAAAA"
+}
+
+###Delete by id
+DELETE {{baseUrl}}/stockExport/delete/1
+
+###Disaptch
+POST {{baseUrl}}/stockExport/4/dispatch
+Content-Type: application/json
+
+{
+  "items": [
+    {
+        "stock_export_item_id": 4, "quantity": 11
+    }
+  ]
+}

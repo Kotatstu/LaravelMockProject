@@ -6,7 +6,7 @@ use App\Models\Category;
 
 class CategoryRepository extends BaseRepository
 {
-    public function model() : string
+    protected function model() : string
     {
         return Category::class;
     }

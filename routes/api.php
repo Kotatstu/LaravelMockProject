@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PurchaseOrderController;
 use App\Http\Controllers\Api\StockController;
+use App\Http\Controllers\Api\StockExportController;
 use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\WarehouseController;
 use Illuminate\Http\Request;
@@ -45,5 +46,13 @@ Route::post('/purchaseOrder/create', [PurchaseOrderController::class, 'store']);
 Route::get('/purchaseOrder/{purchaseOrder}', [PurchaseOrderController::class, 'show']);
 Route::put('/purchaseOrder/update/{purchaseOrder}', [PurchaseOrderController::class, 'update']);
 Route::delete('purchaseOrder/delete/{purchaseOrder}', [PurchaseOrderController::class, 'destroy']);
-
 Route::post('/purchaseOrder/{purchaseOrder}/receive', [PurchaseOrderController::class, 'receive']);
+
+Route::get('stockExport', [StockExportController::class, 'index']);
+Route::post('stockExport/create', [StockExportController::class, 'store']);
+Route::get('stockExport/{stockExport}', [StockExportController::class, 'show']);
+Route::put('stockExport/update/{stockExport}', [StockExportController::class, 'update']);
+Route::delete('stockExport/delete/{stockExport}', [StockExportController::class, 'destroy']);
+Route::post('stockExport/{stockExport}/dispatch', [StockExportController::class, 'dispatch']);
+
+
