@@ -1,13 +1,18 @@
 ### Base URL
 @baseUrl = http://127.0.0.1:8000/api
+@token = Bearer 6|5k5DfUSvGNXCGURpM8852FLPv3LFxi8EV5KfFX5vbeb7fb42
 
 //=========================================== WAREHOUSE CONTROLLER ============================================
 ### GET all warehouse
 GET {{baseUrl}}/warehouse
+Accept: application/json
+Authorization: {{token}}
 
 ### Create a new warehouse
 POST {{baseUrl}}/warehouse
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "name": "Warehouse name C",
@@ -16,10 +21,14 @@ Content-Type: application/json
 
 ### Show?
 GET {{baseUrl}}/warehouse/2
+Accept: application/json
+Authorization: {{token}}
 
 ### Update
 PUT {{baseUrl}}/warehouse/2
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "name": "Warehouse name AAAAAAAAAAAA"
@@ -27,14 +36,20 @@ Content-Type: application/json
 
 ### Delele a wareshouse
 DELETE {{baseUrl}}/warehouse/2
+Accept: application/json
+Authorization: {{token}}
 
 //=======================================CATEGORY CONTROLLER=========================================
 ###Get all the categories record
 GET {{baseUrl}}/category
+Accept: application/json
+Authorization: {{token}}
 
 ###Create a new category
 POST {{baseUrl}}/category/create
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "name": "Porceiline"
@@ -42,10 +57,14 @@ Content-Type: application/json
 
 ###Get by id
 GET {{baseUrl}}/category/9
+Accept: application/json
+Authorization: {{token}}
 
 ###Update by id
 PUT {{baseUrl}}/category/update/9
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "name": "updated name"
@@ -53,14 +72,20 @@ Content-Type: application/json
 
 ###Delete by id
 DELETE {{baseUrl}}/category/delete/8
+Accept: application/json
+Authorization: {{token}}
 
 //========================================= SupplierController =============================================
 ###Get all supplier
 GET {{baseUrl}}/supplier
+Accept: application/json
+Authorization: {{token}}
 
 ###Create a new supplier
 POST {{baseUrl}}/supplier/create
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "name": "Asus",
@@ -70,27 +95,35 @@ Content-Type: application/json
 
 ###Get by id
 GET {{baseUrl}}/supplier/6
-
+Accept: application/json
+Authorization: {{token}}
 
 ###update
 PUT {{baseUrl}}/supplier/update/6
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "name": "updated name Acer"
 }
 
-
 ###Delete by id
 DELETE {{baseUrl}}/supplier/delete/6
+Accept: application/json
+Authorization: {{token}}
 
 //========================================= PRODUCT CONTROLLER ============================================
 ###
 GET {{baseUrl}}/product
+Accept: application/json
+Authorization: {{token}}
 
 ###Create new product
 POST {{baseUrl}}/product/create
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "name": "Product name F",
@@ -101,10 +134,14 @@ Content-Type: application/json
 
 ###Get by id
 GET {{baseUrl}}/product/4
+Accept: application/json
+Authorization: {{token}}
 
 ###Update
 PUT {{baseUrl}}/product/update/4
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "name": "Updated USB Cable",
@@ -113,14 +150,20 @@ Content-Type: application/json
 
 ###Delete by id
 DELETE  {{baseUrl}}/product/delete/4
+Accept: application/json
+Authorization: {{token}}
 
 //============================================== STOCK CONTROLLER ===============================================================
 ###Get all stock
 GET {{baseUrl}}/stock
+Accept: application/json
+Authorization: {{token}}
 
 ###Create new stock
 POST {{baseUrl}}/stock/create
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "warehouse_id": 3,
@@ -130,10 +173,14 @@ Content-Type: application/json
 
 ###Get by id
 GET {{baseUrl}}/stock/5
+Accept: application/json
+Authorization: {{token}}
 
 ###Update by id
 PUT {{baseUrl}}/stock/update/5
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "quantity": 999
@@ -141,24 +188,30 @@ Content-Type: application/json
 
 ###delete by id
 DELETE {{baseUrl}}/stock/delete/5
+Accept: application/json
+Authorization: {{token}}
 
 //======================================================= PurchaseOrderController =================================
 ###Get all
 GET {{baseUrl}}/purchaseOrder
+Accept: application/json
+Authorization: {{token}}
 
 ###Create new
 POST {{baseUrl}}/purchaseOrder/create
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
-      "reference": "Greyrat",
+      "reference": "Token Test",
       "supplier_id": 1,
       "status": "Pending",
       "items": 
       [
         {
             "product_id": 2,
-            "quantity": 69
+            "quantity": 100
         },
         {
             "product_id": 3,
@@ -169,10 +222,14 @@ Content-Type: application/json
 
 ###Get by id
 GET {{baseUrl}}/purchaseOrder/2
+Accept: application/json
+Authorization: {{token}}
 
 ###Update by id
 PUT {{baseUrl}}/purchaseOrder/update/2
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "status": "Pending"
@@ -180,22 +237,26 @@ Content-Type: application/json
 
 ###Delete by id
 DELETE {{baseUrl}}/purchaseOrder/delete/3
+Accept: application/json
+Authorization: {{token}}
 
 ###Received an order, called service layer
-POST {{baseUrl}}/purchaseOrder/10/receive
+POST {{baseUrl}}/purchaseOrder/11/receive
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "warehouse_id": 2,
     "items":
     [
         {
-            "purchase_order_item_id": 9,
-            "quantity": 19
+            "purchase_order_item_id": 11,
+            "quantity": 100
         },
 
         {
-            "purchase_order_item_id": 10,
+            "purchase_order_item_id": 12,
             "quantity": 100
         }
 
@@ -205,10 +266,14 @@ Content-Type: application/json
 //============================================== STOCK EXPORT CONTROLLER =========================================
 ###Get all
 GET {{baseUrl}}/stockExport
+Accept: application/json
+Authorization: {{token}}
 
 ###Create new record
 POST {{baseUrl}}/stockExport/create
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
   "reference": "EXP-1003",
@@ -223,10 +288,14 @@ Content-Type: application/json
 
 ###Get by id
 GET {{baseUrl}}/stockExport/1
+Accept: application/json
+Authorization: {{token}}
 
 ###Update by id
 PUT {{baseUrl}}/stockExport/update/1
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
     "destination": "AAAAAAAAAAAAAAAAAAAAAAAA"
@@ -234,15 +303,41 @@ Content-Type: application/json
 
 ###Delete by id
 DELETE {{baseUrl}}/stockExport/delete/1
+Accept: application/json
+Authorization: {{token}}
 
 ###Disaptch
 POST {{baseUrl}}/stockExport/4/dispatch
 Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
 
 {
   "items": [
     {
-        "stock_export_item_id": 4, "quantity": 11
+        "stock_export_item_id": 4, "quantity": 10
     }
   ]
+}
+
+//=========================================== Authentications =======================================
+###Register new user
+POST {{baseUrl}}/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "user123",
+    "email": "kotatstu0303@gmail.com",
+    "password": "12345678"
+}
+
+###Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "kotatstu0303@gmail.com",
+    "password": "12345678"
 }
