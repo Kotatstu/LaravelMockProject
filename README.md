@@ -1,58 +1,68 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Warehouse Management System (Laravel API)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful backend for managing warehouse inventory — suppliers, products, purchase orders, stock receiving, and stock export/dispatch — built with Laravel 13 and PHP 8.3 as a hands-on architecture learning project.
 
-## About Laravel
+The focus of this project was practicing clean backend architecture: separating HTTP handling, business logic, and data access into distinct layers, and correctly handling concurrency and partial-fulfillment scenarios that come up in real inventory systems.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Authentication** — token-based auth via Laravel Sanctum (register/login), with all resource routes protected behind `auth:sanctum`
+- **Core inventory resources** — full CRUD for Warehouses, Categories, Suppliers, and Products
+- **Purchase orders** — create a purchase order with line items, then receive stock against it (partial receiving supported per line item)
+- **Stock exports** — create an export order with line items, then dispatch stock against it (partial dispatching supported; status automatically moves through `pending → partly_dispatched → dispatched`)
+- **Concurrency-safe stock updates** — increment/decrement operations use row-level locking (`lockForUpdate`) inside DB transactions to prevent race conditions when multiple requests touch the same stock record
+- **Insufficient-stock protection** — dispatch attempts are validated against remaining quantity and available stock, returning a `409 Conflict` with a clear error message instead of allowing overselling
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Architecture
 
-## Learning Laravel
+The app follows a layered structure rather than putting logic in controllers:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+Controller  ->  Service  ->  Repository  ->  Model
+              (business      (data
+               logic)         access)
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+- **Controllers** (`app/Http/Controllers/Api`) — validate requests and return responses only
+- **Services** (`app/Services`) — orchestrate business logic and DB transactions (e.g. `StockExportService::dispatch()`, `PurchaseOrderService::createWithItems()`)
+- **Repositories** (`app/Repositories`) — encapsulate Eloquent queries behind a `BaseRepository`, including the locking logic in `StockRepository`
+- **DTOs** (`app/DTOs`) — typed, readonly data objects (e.g. `ReceiveStockDTO`, `DispatchStockDTO`) used to pass validated request data into services instead of raw arrays
 
-## Contributing
+## Data model
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+`Warehouse`, `Supplier`, `Category`, `Product`, `Stock`, `PurchaseOrder` + `PurchaseOrderItem`, `StockExport` + `StockExportItem` — with stock tracked per warehouse/product pair, and purchase/export items tracking `quantity` vs. `quantity_received` / `quantity_dispatched` to support partial fulfillment.
 
-## Code of Conduct
+## Tech stack
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP 8.3, Laravel 13
+- SQLite (development)
+- Laravel Sanctum (API authentication)
 
-## Security Vulnerabilities
+## API overview
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+All endpoints below (except register/login) require a Sanctum bearer token.
 
-## License
+| Resource | Endpoints |
+|---|---|
+| Auth | `POST /register`, `POST /login` |
+| Warehouses | full REST resource (`GET/POST/PUT/DELETE /warehouse`) |
+| Categories, Suppliers, Products | `GET`, `POST /create`, `GET /{id}`, `PUT /update/{id}`, `DELETE /delete/{id}` |
+| Purchase Orders | CRUD + `POST /purchaseOrder/{id}/receive` |
+| Stock Exports | CRUD + `POST /stockExport/{id}/dispatch` |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+See [`API_Test.http`](./API_Test.http) for ready-to-run example requests.
+
+## Setup
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate
+php artisan serve
+```
+
+## Status
+
+This is an actively developed learning project — routes and validation are functional, automated test coverage is still a work in progress.
