@@ -1,6 +1,6 @@
 ### Base URL
 @baseUrl = http://127.0.0.1:8000/api
-@token = Bearer 6|5k5DfUSvGNXCGURpM8852FLPv3LFxi8EV5KfFX5vbeb7fb42
+@token = Bearer 10|5gluH8Q8dR0EzkTNIGjlgZOCmpu5feALGAm5EYvLbcab6a7a
 
 //=========================================== WAREHOUSE CONTROLLER ============================================
 ### GET all warehouse
@@ -207,7 +207,7 @@ Authorization: {{token}}
       "reference": "Token Test",
       "supplier_id": 1,
       "status": "Pending",
-      "items": 
+      "items":
       [
         {
             "product_id": 2,
@@ -281,7 +281,7 @@ Authorization: {{token}}
   "destination": "Downtown Shop",
   "items": [
     {
-        "product_id": 2, "quantity": 10 
+        "product_id": 2, "quantity": 10
     }
   ]
 }
