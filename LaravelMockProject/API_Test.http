@@ -129,7 +129,7 @@ Authorization: {{token}}
     "name": "Product name F",
     "sku": "F-001",
     "category_id": 1,
-    "supplier_id": 2
+    "supplier_id": 1
 }
 
 ###Get by id
@@ -166,9 +166,9 @@ Accept: application/json
 Authorization: {{token}}
 
 {
-    "warehouse_id": 3,
-    "product_id": 3,
-    "quantity": 10
+    "warehouse_id": 1,
+    "product_id": 1,
+    "quantity": 100
 }
 
 ###Get by id

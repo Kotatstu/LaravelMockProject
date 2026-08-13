@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth';
 
 const warehouses = ref([])//list of warehouse fetch from calling API
 const authStore = useAuthStore()//for token authentication
+const errorMessage = ref('')//Catch the exeption happen throw by API respone
 
 const showModal = ref(false)//Flag to open create new warehouse or not
 const form = ref({name: '', location: ''})//Blank form info
@@ -27,6 +28,8 @@ function openCreateModal()
   editId.value = null
   showModal.value = true
 
+  errorMessage.value = ''
+
   form.value = {name: '', location: ''}
 }
 
@@ -43,19 +46,28 @@ function openEditModal(warehouse)
 async function submitForm() {
   //token key for less code repeating
   const headers = {Authorization: `Bearer ${authStore.token}`}
+  errorMessage.value = ''
 
+  try
+  {
+    if (isEdit.value)
+    {
+      await api.put(`/warehouse/${editId.value}`, form.value, {headers})
+    }
+    else
+    {
+      await api.post('/warehouse', form.value, {headers})
+    }
+
+    showModal.value = false
+    await fetchWarehouse()
+  }
+  catch (error)
+  {
+    errorMessage.value = error.response?.data?.message || 'Something went wrong.'
+  }
   //check is either using the modal for edit or create
-  if (isEdit.value)
-  {
-    await api.put(`/warehouse/${editId.value}`, form.value, {headers})
-  }
-  else
-  {
-    await api.post('/warehouse', form.value, {headers})
-  }
 
-  showModal.value = false
-  await fetchWarehouse()
 }
 
 //Delete the selected warehouse (vial ID)
@@ -105,7 +117,7 @@ onMounted(() => {
 
     <div v-if="showModal" class="modal-backdrop">
       <div class="modal">
-        <h2>{{ isEditing ? 'Edit Warehouse' : 'New Warehouse' }}</h2>
+        <h2>{{ isEdit ? 'Edit Warehouse' : 'New Warehouse' }}</h2>
         <form @submit.prevent="submitForm">
           <div>
             <label>Name</label>
@@ -115,6 +127,7 @@ onMounted(() => {
             <label>Location</label>
             <input v-model="form.location" />
           </div>
+          <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
           <button type="submit">Save</button>
           <button type="button" @click="showModal = false">Cancel</button>
         </form>
