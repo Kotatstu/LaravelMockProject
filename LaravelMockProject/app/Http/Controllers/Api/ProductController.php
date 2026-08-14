@@ -69,6 +69,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        if ($product->stocks()->exists() || $product->purchaseOrderItems()->exists())
+        {
+            return response()->json([
+                'message' => 'Cannot delete this product because it still has stock or order records.'
+            ], 409);
+        }
+
         $this->repository->delete($product);
 
         return response()->json(null, 204);
