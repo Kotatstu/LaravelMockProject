@@ -107,14 +107,6 @@ npm run dev
 ```
 App runs at `http://localhost:5173`.
 
-## Known limitations / not yet implemented
-
-- No automated test suite — functionality has been verified manually via REST Client and browser testing
-- No API Resource classes — controllers return raw Eloquent models
-- No pagination — list endpoints return full result sets
-- No soft deletes — records are hard-deleted
-- No loading-state indicators on the frontend during data fetches
-
 ## Status
 
 Actively developed learning project. Core inventory workflows (receiving and exporting stock, including partial fulfillment) are fully functional end to end, across both backend and frontend.
