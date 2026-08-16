@@ -2,27 +2,4 @@
 - Note for future fix: The receving order right now only check if the amount receive exceeding the remaining or not.
 It should have also check on stock and update it after each sucessfully received order
 - Developing:
-+ frontend using vuejs:
-      Public (no auth required)
-      /login
-      /register
-
-      Protected (sidebar layout + route guard)
-      /dashboard                          ← landing page after login
-
-      /warehouses                         ← list + modal for create/edit
-      /categories                         ← list + modal for create/edit
-      /suppliers                          ← list + modal for create/edit
-      /stocks                             ← list + modal for create/edit
-
-      /products                           ← list page
-      /products/create                    ← full page (needs category/supplier dropdowns)
-      /products/:id/edit                  ← full page
-
-      /purchase-orders                    ← list page
-      /purchase-orders/create             ← full page (dynamic line items)
-      /purchase-orders/:id                ← detail page + receive action
-
-      /stock-exports                      ← list page
-      /stock-exports/create               ← full page (dynamic line items)
-      /stock-exports/:id                  ← detail page + dispatch action
+Possively taking a big revision on bussiness logic?
