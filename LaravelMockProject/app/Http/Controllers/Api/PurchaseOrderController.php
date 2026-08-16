@@ -23,7 +23,7 @@ class PurchaseOrderController extends Controller
     public function index()
     {
 
-        return response()->json($this->repository->all(['supplier', 'items']));
+        return response()->json($this->repository->all(['supplier', 'items.product']));
     }
 
     /**
@@ -88,7 +88,7 @@ class PurchaseOrderController extends Controller
             'items.*.purchase_order_item_id' => ['required', 'integer', 'exists:purchase_order_items,id'],
             'items.*.quantity' => ['required', 'integer', 'min:1']
         ]);
-        
+
         try
         {
             $dto = ReceiveStockDTO::fromArray($validated);
@@ -100,6 +100,6 @@ class PurchaseOrderController extends Controller
         {
             return response()->json(['message' => $e->getMessage()], 409);
         }
-        
+
     }
 }

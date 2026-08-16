@@ -83,44 +83,77 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <h1>{{ isEdit ? 'Edit Product' : 'New Product' }}</h1>
+  <div class="mx-auto max-w-lg">
+    <h1 class="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
+      {{ isEdit ? 'Edit Product' : 'New Product' }}
+    </h1>
 
-    <form @submit.prevent="submitForm">
-      <div>
-        <label>Name</label>
-        <input v-model="form.name" required />
-      </div>
+    <div class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-950">
+      <form @submit.prevent="submitForm" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+          <input
+            v-model="form.name"
+            required
+            class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+          />
+        </div>
 
-      <div>
-        <label>SKU</label>
-        <input v-model="form.sku" required />
-      </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300">SKU</label>
+          <input
+            v-model="form.sku"
+            required
+            class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+          />
+        </div>
 
-      <div>
-        <label>Category</label>
-        <select v-model="form.category_id" required>
-          <option value="" disabled>Select a category</option>
-          <option v-for="category in categories" :key="category.id" :value="category.id">
-            {{ category.name }}
-          </option>
-        </select>
-      </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+          <select
+            v-model="form.category_id"
+            required
+            class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+          >
+            <option value="" disabled>Select a category</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
 
-      <div>
-        <label>Supplier</label>
-        <select v-model="form.supplier_id" required>
-          <option value="" disabled>Select a supplier</option>
-          <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">
-            {{ supplier.name }}
-          </option>
-        </select>
-      </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Supplier</label>
+          <select
+            v-model="form.supplier_id"
+            required
+            class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+          >
+            <option value="" disabled>Select a supplier</option>
+            <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">
+              {{ supplier.name }}
+            </option>
+          </select>
+        </div>
 
-      <button type="submit">Save</button>
-      <button type="button" @click="router.push('/products')">Cancel</button>
-    </form>
+        <p v-if="errorMessage" class="text-sm text-red-600 dark:text-red-400">{{ errorMessage }}</p>
 
-    <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+        <div class="mt-2 flex justify-end gap-2">
+          <button
+            type="button"
+            @click="router.push('/products')"
+            class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>

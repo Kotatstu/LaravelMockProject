@@ -10,6 +10,13 @@ const router = createRouter({
       name: 'login',
       component: () => import('@/views/LoginView.vue'),
     },
+
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/views/RegisterView.vue')
+    },
+
     {
       path: '/',
       component: AppLayout,
@@ -58,9 +65,33 @@ const router = createRouter({
         },
 
         {
-          path: 'products/:id/edit',
+          path: '/products/:id/edit',
           name: 'product-edit',
           component: () => import('@/views/ProductFormView.vue')
+        },
+
+        {
+          path: '/purchaseOrders',
+          name: 'purchase-orders',
+          component: () => import('@/views/PurchaseOrderView.vue')
+        },
+
+        {
+          path: '/purchaseOrder/create',
+          name: 'purchase-order-create',
+          component: () => import('@/views/PurchaseOrderCreateView.vue')
+        },
+
+        {
+          path: '/stockExports',
+          name: 'stock-export',
+          component: () => import('@/views/StockExportView.vue')
+        },
+
+        {
+          path: '/stockExport/create',
+          name: 'stock-export-create',
+          component: () => import('@/views/StockExportCreateView.vue')
         }
       ],
     },

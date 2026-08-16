@@ -21,7 +21,7 @@ class StockExportController extends Controller
      */
     public function index()
     {
-        return response()->json($this->repository->all(['warehouse', 'stockExportItems']));
+        return response()->json($this->repository->all(['warehouse', 'stockExportItems.product']));
     }
 
     /**
@@ -90,7 +90,7 @@ class StockExportController extends Controller
             $stockExport = $this->stockExportService->dispatch($stockExport, $dto);
 
             return response()->json($stockExport);
-        }   
+        }
         catch (\Exception $e)
         {
             return response()->json(['message' => $e->getMessage()], 409);
