@@ -1,6 +1,6 @@
 # Warehouse Management System
 
-A full-stack warehouse management application — suppliers, products, purchase orders, stock receiving, and stock export/dispatch — built as a hands-on learning project covering clean backend architecture (Laravel) and a modern reactive frontend (Vue 3).
+A full-stack warehouse management application — suppliers, products, purchase orders, stock receiving, and stock export/dispatch — built as a hands-on learning project covering clean backend architecture Laravel and Vue 3.
 
 The focus throughout was practicing real-world patterns: layered backend architecture, concurrency-safe stock operations, partial-fulfillment workflows, and a token-authenticated SPA consuming a REST API.
 
@@ -9,8 +9,8 @@ The focus throughout was practicing real-world patterns: layered backend archite
 This is a monorepo with two independent applications:
 
 ```
-├── LaravelMockProject/     # REST API backend
-└── warehouse_frontend/     # Vue 3 SPA frontend
+├── LaravelMockProject/  
+└── warehouse_frontend/    
 ```
 
 ## Features
